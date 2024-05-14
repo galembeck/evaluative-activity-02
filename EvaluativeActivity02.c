@@ -3,6 +3,12 @@
 
 #include <locale.h>
 
+#include <unistd.h>
+
+#define max_flights 15
+#define scales_maximum 5
+#define city_name 100
+
 /* Atividade Avaliativa (A2) | Engenharia de Computação - Programação de Computadores
 
     º IDEIA:
@@ -36,31 +42,82 @@
 */
 
 typedef struct flightInformation {
-    int flight_code, scales_number;
-    char departure_city, arrival_city, scale_city;
+    int flight_code, scales_amount[scales_maximum];
+    char arrival_city[city_name], departure_city[city_name], scale_city[city_name];
 } FlightInformation;
 
-void optionsMenu(int *selected_option) {
+void introductionMessage() {
     system("cls");
 
-    printf("1º opção:");
-    printf("2º opção:");
-    printf("3º opção:");
-    printf("4º opção:");
-    printf("5º opção:");
-    printf("6º opção:");
-    printf("7º opção:");
+    printf("\n Seja bem-vindo ao sistema de ajuda ao usuário da \"Voe Sempre, Voe Feliz\".");
 
-    //printf("");
-    scanf("%d", &selected_option);
+    printf("\n\n Abaixo, estão listadas todas as opções disponíveis para serem executadas em nosso sistema.");
+    printf("\n Escolha, dentre as opções listadas abaixo (1-7), uma para ser executada a seguir.\n");
 }
 
+void optionsMenu(int *selected_option) {
+    introductionMessage();
+
+    printf("\n Opção 1: Incluir voos;");
+    printf("\n Opção 2: Alterar informações de voo;");
+    printf("\n Opção 3: Apagar voos;");
+    printf("\n Opção 4: Voos partindo de uma cidade de origem;");
+    printf("\n Opção 5: Informações do voo com menor número de escalas (determinada partida e origem);");
+    printf("\n Opção 6: Voos chegando em uma cidade de destino;");
+    printf("\n Opção 7: Sair;");
+
+    printf("\n\n Opção: ");
+    scanf("%d", selected_option);
+}
+
+void includeFlights(FlightInformation info) {
+    int flights;
+
+    system("cls");
+
+    // #TODO: INCLUIR SISTEMA DE VERIFICAÇÃO DA QUANTIDADE DE VOOS A SEREM INCLUIDOS NO SISTEMA.
+
+    do {
+        printf("\n Quantos voos você deseja incluir? ");
+        scanf("%d", &flights);
+
+        if((flights <= 0) || (flights > max_flights)) {
+            printf("\n O número informado de voos a serem incluídos é inválido!\n");
+
+            sleep(2);
+            system("cls");
+        }
+    } while((flights <= 0) || (flights > max_flights));
+
+    printf("\n Informe o código do voo: ");
+    scanf("%d", &info.flight_code);
+
+    printf("%d", info.flight_code);
+}
 
 int main() {
     setlocale(LC_ALL, "portuguese");
 
-    FlightInformation flight;
+    FlightInformation info;
+    int selected_option, flag = 0;
 
-    // return 0;
-    // system("pause");
+    do {
+        flag = 0;
+
+        optionsMenu(&selected_option);
+
+        switch(selected_option) {
+            case 1:
+                includeFlights(info);
+
+                system("pause");
+                break;
+            case 2:
+                printf("TESTE2");
+
+                break;
+            case 3:
+                exit(0);
+        }
+    } while(flag != 1);
 }
