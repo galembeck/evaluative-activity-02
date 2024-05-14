@@ -1,9 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <locale.h>
+#include <string.h>
 
 #include <unistd.h>
+
+#include <locale.h>
 
 #define max_flights 15
 #define scales_maximum 5
@@ -42,8 +44,8 @@
 */
 
 typedef struct flightInformation {
-    int flight_code, scales_amount[scales_maximum];
-    char arrival_city[city_name], departure_city[city_name], scale_city[city_name];
+    int flight_code, scales_amount;
+    char arrival_city[city_name], departure_city[city_name], scales_city[5][100];
 } FlightInformation;
 
 void introductionMessage() {
@@ -71,7 +73,7 @@ void optionsMenu(int *selected_option) {
 }
 
 void includeFlights(FlightInformation info) {
-    int flights;
+    int i, j, k, flights, scales, aux[100];
 
     system("cls");
 
@@ -89,10 +91,31 @@ void includeFlights(FlightInformation info) {
         }
     } while((flights <= 0) || (flights > max_flights));
 
-    printf("\n Informe o código do voo: ");
-    scanf("%d", &info.flight_code);
+    for(i = 0; i < flights; i++) {
+        printf("\n Informe o código do voo: ");
+        scanf("%d", &info.flight_code);
 
-    printf("%d", info.flight_code);
+        printf("\n Informe a cidade de origem do voo: ");
+        fflush(stdin);
+        fgets(info.departure_city, 100, stdin);
+
+        printf("\n Informe a cidade de destino do voo: ");
+        fflush(stdin);
+        fgets(info.arrival_city, 100, stdin);
+
+        do {
+            printf("\n Informe o número de escalas do voo: ");
+            scanf("%d", &info.scales_amount);
+        } while((info.scales_amount < 0) || (info.scales_amount > scales_maximum));
+
+        for(k = 0; k < info.scales_amount; k++) {
+            printf("\n Informe a cidade da %dº escala do voo: ", k+1);
+            fflush(stdin);
+            fgets(info.scales_city[k], 100, stdin);
+
+            printf("%s", info.scales_city[k]);
+        }
+    }
 }
 
 int main() {
@@ -102,6 +125,8 @@ int main() {
     int selected_option, flag = 0;
 
     do {
+        system("pause");
+
         flag = 0;
 
         optionsMenu(&selected_option);
