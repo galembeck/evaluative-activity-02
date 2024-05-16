@@ -59,7 +59,8 @@ void loginPage();
 void optionsMenu(int *selected_option);
 
 void includeFlight(FlightData data[], int *flights_count);
-void updateFlightInformation(FlightData data[], int flights_count);
+void updateFlight(FlightData data[], int flights_count);
+void deleteFlight(FlightData data[], int *flights_count);
 
 
 
@@ -84,7 +85,11 @@ int main() {
 
                 break;
             case 2:
-                updateFlightInformation(data, flights_count);
+                updateFlight(data, flights_count);
+
+                break;
+            case 3:
+                deleteFlight(data, &flights_count);
 
                 break;
             case 7:
@@ -330,9 +335,9 @@ void includeFlight(FlightData data[], int *flights_count) {
     system("pause");
 }
 
-void updateFlightInformation(FlightData data[], int flights_count) {
+void updateFlight(FlightData data[], int flights_count) {
     FlightData old_data;
-    int update_option, updatable_code, stored_flight = -1, i, j;
+    int i, j, update_option, updatable_code, stored_flight = -1;
 
     system("cls");
 
@@ -513,6 +518,90 @@ void updateFlightInformation(FlightData data[], int flights_count) {
         system("pause");
     } else {
         printf("\n\n º Não há nenhum voo inserido no banco de dados do sistema (sem voos para exibir)...\n\n");
+
+        sleep(1);
+        system("pause");
+        return;
+    }
+}
+
+void deleteFlight(FlightData data[], int *flights_count) {
+    int i, j, deletable_code, stored_flight = -1;
+    char deletion_confirmation;
+
+    system("cls");
+
+    companyShowcase();
+
+    printf("\n Neste painel, é possível excluir um determinado voo inserido/cadastrado no sistema.");
+
+    printf("\n\n Para que um voo seja excluído efetivamente, é necessário que seu código seja informado.");
+    printf("\n Abaixo estão listados todos os códigos dos voos cadastrados no banco de dados do sistema da \"Voe Sempre, Voe Feliz\".");
+
+    if(*flights_count > 0) {
+        for(i = 0; i < *flights_count; i++) {
+            printf("\n º Código do %dº voo: %d", i+1, data[i].flight_code);
+        }
+
+        printf("\n\n º Código do voo (a ser excluído): ");
+        scanf("%d", &deletable_code);
+
+        for(j = 0; j < *flights_count; j++) {
+            if(data[j].flight_code == deletable_code) {
+                stored_flight = j;
+                break;
+            }
+        }
+
+        if(stored_flight == -1) {
+            printf("\n Nenhum voo com código \"%d\" foi encontrado no banco de dados do sistema.\n\n", deletable_code);
+
+            sleep(1);
+            system("pause");
+
+            return;
+        }
+
+        system("cls");
+
+        companyShowcase();
+
+        printf("\n As informações do voo a ser excluído são:");
+        printf("\n º Código do voo: %d", data[stored_flight].flight_code);
+        printf("\n º Cidade de origem: %s", data[stored_flight].departure_city);
+        printf(" º Cidade de destino: %s", data[stored_flight].arrival_city);
+        printf(" º Número de escalas: %d\n", data[stored_flight].scales_amount);
+        if (data[stored_flight].scales_amount > 0) {
+            printf(" º Cidades de escala:\n");
+            for (j = 0; j < data[stored_flight].scales_amount; j++) {
+                printf("   | %s", data[stored_flight].scales_cities[j]);
+            }
+        } else {
+            printf(" º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+        }
+
+        printf("\n Deseja confirmar a exclusão do voo listado acima? [S/n]: ");
+
+        do {
+            fflush(stdin);
+            deletion_confirmation = getchar();
+        } while ((toupper(deletion_confirmation) != 'S') && (tolower(deletion_confirmation) != 'n'));
+
+        if (toupper(deletion_confirmation) == 'S') {
+            for (i = stored_flight; i < *flights_count - 1; i++) {
+                data[i] = data[i + 1];
+            }
+            (*flights_count)--;
+
+            printf("\n O voo foi excluído com sucesso!\n\n");
+        } else {
+            printf("\n A exclusão do voo foi cancelada!\n\n");
+        }
+
+        sleep(1);
+        system("pause");
+    } else {
+        printf("\n\n º Não há nenhum voo cadastrado no banco de dados do sistema (sem voos para exibir)...\n\n");
 
         sleep(1);
         system("pause");
