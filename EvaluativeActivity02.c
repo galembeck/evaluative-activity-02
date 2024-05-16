@@ -62,8 +62,11 @@ void includeFlight(FlightData data[], int *flights_count);
 void updateFlight(FlightData data[], int flights_count);
 void deleteFlight(FlightData data[], int *flights_count);
 
+void listAllFlights(FlightData data[], int flights_count);
+
 void countFlightFromCity(FlightData data[], int flights_count);
 void findFlightWithMinimumStops(FlightData data[], int flights_count);
+void findFlightsToDestination(FlightData data[], int flights_count);
 
 
 
@@ -88,18 +91,30 @@ int main() {
 
                 break;
             case 2:
-                updateFlight(data, flights_count);
+                listAllFlights(data, flights_count);
 
                 break;
             case 3:
-                deleteFlight(data, &flights_count);
+                updateFlight(data, flights_count);
 
                 break;
             case 4:
+                deleteFlight(data, &flights_count);
+
+                break;
+            case 5:
                 countFlightFromCity(data, flights_count);
 
                 break;
+            case 6:
+                findFlightWithMinimumStops(data, flights_count);
+
+                break;
             case 7:
+                findFlightsToDestination(data, flights_count);
+
+                break;
+            case 8:
                 system("cls");
 
                 companyShowcase();
@@ -212,12 +227,13 @@ void optionsMenu(int *selected_option) {
     sleep(1);
 
     printf("\n º Opção 1: Incluir voos;");
-    printf("\n º Opção 2: Alterar informações de voo;");
-    printf("\n º Opção 3: Apagar voos;");
-    printf("\n º Opção 4: Voos partindo de uma cidade de origem;");
-    printf("\n º Opção 5: Informações do voo com menor número de escalas (determinada partida e origem);");
-    printf("\n º Opção 6: Voos chegando em uma cidade de destino;");
-    printf("\n º Opção 7: Sair;");
+    printf("\n º Opção 2: Listar voos cadastrados;");
+    printf("\n º Opção 3: Alterar informações de voo;");
+    printf("\n º Opção 4: Apagar voos;");
+    printf("\n º Opção 5: Voos partindo de uma cidade de origem;");
+    printf("\n º Opção 6: Informações do voo com menor número de escalas (determinada partida e origem);");
+    printf("\n º Opção 7: Voos chegando em uma cidade de destino;");
+    printf("\n º Opção 8: Sair;");
 
     sleep(1);
     printf("\n\n Opção: ");
@@ -286,6 +302,10 @@ void includeFlight(FlightData data[], int *flights_count) {
         do {
             printf("\n Número de escalas do %dº voo: ", i+1);
             scanf("%d", &temp_data[temp_flights_count].scales_amount);
+
+            if((temp_data[temp_flights_count].scales_amount < 0) || (temp_data[temp_flights_count].scales_amount > max_scales)) {
+                printf("\n Não é possível adicionar menos de 0 e mais de 5 escalas em um voo.\n");
+            }
         } while((temp_data[temp_flights_count].scales_amount < 0) || (temp_data[temp_flights_count].scales_amount > max_scales));
 
         for(j = 0; j < temp_data[temp_flights_count].scales_amount; j++) {
@@ -314,12 +334,12 @@ void includeFlight(FlightData data[], int *flights_count) {
         printf("\n º Cidade de destino do %dº voo: %s", i+1, temp_data[i].arrival_city);
         printf("\n º Número de escalas do %dº voo: %d", i+1, temp_data[i].scales_amount);
         if(temp_data[i].scales_amount > 0) {
-           printf(" º Cidades de escala do %dº voo:\n", i+1);
+           printf("\n º Cidades de escala do %dº voo:\n", i+1);
             for(j = 0; j < temp_data[i].scales_amount; j++) {
                 printf("   | %s\n", temp_data[i].scales_cities[j]);
             }
         } else {
-            printf(" º Cidades de escala do %dº voo: \"NÃO HÁ ESCALAS\"\n", i+1);
+            printf("\n º Cidades de escala do %dº voo: \"NÃO HÁ ESCALAS\"\n", i+1);
         }
     }
 
@@ -392,12 +412,12 @@ void updateFlight(FlightData data[], int flights_count) {
         printf("\n º Cidade de destino: %s", data[stored_flight].arrival_city);
         printf("\n º Número de escalas: %d", data[stored_flight].scales_amount);
         if(data[stored_flight].scales_amount > 0) {
-            printf(" º Cidades de escala:\n");
+            printf("\n º Cidades de escala:\n");
             for(j = 0; j < data[stored_flight].scales_amount; j++) {
                 printf("   | %s\n", data[stored_flight].scales_cities[j]);
             }
         } else {
-            printf(" º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
         }
 
         printf("\n Opções de alterações que podem ser realizadas no banco de dados de voos do sistema da \"Voe Sempre, Voe Feliz\".");
@@ -424,12 +444,12 @@ void updateFlight(FlightData data[], int flights_count) {
         printf("\n º Cidade de destino: %s", data[stored_flight].arrival_city);
         printf("\n º Número de escalas: %d", data[stored_flight].scales_amount);
         if(data[stored_flight].scales_amount > 0) {
-            printf(" º Cidades de escala:\n");
+            printf("\n º Cidades de escala:\n");
             for(j = 0; j < data[stored_flight].scales_amount; j++) {
                 printf("   | %s\n", data[stored_flight].scales_cities[j]);
             }
         } else {
-            printf(" º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
         }
 
         switch(update_option) {
@@ -504,12 +524,12 @@ void updateFlight(FlightData data[], int flights_count) {
         printf("\n º Cidade de destino: %s", old_data.arrival_city);
         printf("\n º Número de escalas: %d", old_data.scales_amount);
         if(old_data.scales_amount > 0) {
-            printf(" º Cidades de escala:\n");
+            printf("\n º Cidades de escala:\n");
             for(j = 0; j < old_data.scales_amount; j++) {
                 printf("   | %s\n", old_data.scales_cities[j]);
             }
         } else {
-            printf(" º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
         }
 
         printf("\n Informações atualizadas do voo:");
@@ -518,12 +538,12 @@ void updateFlight(FlightData data[], int flights_count) {
         printf("\n º Cidade de destino: %s", data[stored_flight].arrival_city);
         printf("\n º Número de escalas: %d", data[stored_flight].scales_amount);
         if(data[stored_flight].scales_amount > 0) {
-            printf(" º Cidades de escala:\n");
+            printf("\n º Cidades de escala:\n");
             for(j = 0; j < data[stored_flight].scales_amount; j++) {
                 printf("   | %s\n", data[stored_flight].scales_cities[j]);
             }
         } else {
-            printf(" º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
         }
 
         printf("\n Informações do voo atualizadas com sucesso!\n\n");
@@ -585,12 +605,12 @@ void deleteFlight(FlightData data[], int *flights_count) {
         printf("\n º Cidade de destino: %s", data[stored_flight].arrival_city);
         printf("\n º Número de escalas: %d", data[stored_flight].scales_amount);
         if (data[stored_flight].scales_amount > 0) {
-            printf(" º Cidades de escala:\n");
+            printf("\n º Cidades de escala:\n");
             for (j = 0; j < data[stored_flight].scales_amount; j++) {
                 printf("   | %s\n", data[stored_flight].scales_cities[j]);
             }
         } else {
-            printf(" º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
         }
 
         printf("\n Deseja confirmar a exclusão do voo listado acima? [S/n]: ");
@@ -624,11 +644,50 @@ void deleteFlight(FlightData data[], int *flights_count) {
 
 
 
+void listAllFlights(FlightData data[], int flights_count) {
+    int i;
+
+    system("cls");
+
+    companyShowcase();
+
+    printf("\n Neste painel, é possível consultar/listar todos os voos disponíveis cadastrados no banco de dados do sistema.");
+
+    printf("\n\n Total de voos cadastrados: %d\n\n", flights_count);
+
+    if(flights_count > 0) {
+        for(i = 0; i < flights_count; i++) {
+            printf(" º Código do %dº voo: %d", i+1, data[i].flight_code);
+            printf("\n º Cidade de origem do %dº voo: %s", i+1, data[i].departure_city);
+            printf("\n º Cidade de destino do %dº voo: %s", i+1, data[i].arrival_city);
+            printf("\n º Número de escalas do %dº voo: %d", i+1, data[i].scales_amount);
+            if (data[i].scales_amount > 0) {
+                printf("\n º Cidades de escala do %dº voo:\n", i+1);
+                for (int j = 0; j < data[i].scales_amount; j++) {
+                    printf("   | %s\n", data[i].scales_cities[j]);
+                }
+            } else {
+                printf("\n º Cidades de escala do %dº voo: \"NÃO HÁ ESCALAS\"\n", i+1);
+            }
+            printf("\n");
+        }
+    } else {
+        printf("\n\n Não há nenhum voo cadastrado no banco de dados do sistema (sem dados para exibir)...\n\n");
+    }
+
+    sleep(1);
+    system("pause");
+}
+
+
+
 void countFlightFromCity(FlightData data[], int flights_count) {
     int i, count = 0;
     char origin_city[max_char];
 
     system("cls");
+
+    companyShowcase();
 
     printf("\n Neste painel, é possivel determinar quantos voos saem de uma determinada cidade de origem.");
 
@@ -657,6 +716,8 @@ void findFlightWithMinimumStops(FlightData data[], int flights_count) {
 
     system("cls");
 
+    companyShowcase();
+
     printf("\n Neste painel, é possível determinar o voo com o menor número de escalas, dado a cidade de origem e destino.");
 
     printf("\n\n Informe a cidade de origem e destino para determinar as informações do voo com o menor número de escalas.");
@@ -665,10 +726,10 @@ void findFlightWithMinimumStops(FlightData data[], int flights_count) {
     fgets(origin_city, max_char, stdin);
     origin_city[strcspn(origin_city, "\n")] = '\0'; // Remover '\n'
 
-    printf("\n\n º Cidade de destino: ");
+    printf("\n º Cidade de destino: ");
     fflush(stdin);
     fgets(destination_city, max_char, stdin);
-    origin_city[strcspn(destination_city, "\n")] = '\0'; // Remover '\n'
+    destination_city[strcspn(destination_city, "\n")] = '\0'; // Remover '\n'
 
     for(i = 0; i < flights_count; i++) {
         if((strcmp(data[i].departure_city, origin_city) == 0) && (strcmp(data[i].arrival_city, destination_city) == 0)) {
@@ -686,15 +747,65 @@ void findFlightWithMinimumStops(FlightData data[], int flights_count) {
         printf("\n º Cidade de destino: %s", data[min_stops_index].arrival_city);
         printf("\n º Número de escalas: %d", data[min_stops_index].scales_amount);
         if (data[min_stops_index].scales_amount > 0) {
-            printf(" º Cidades de escala:\n");
+            printf("\n º Cidades de escala:\n");
             for (int j = 0; j < data[min_stops_index].scales_amount; j++) {
                 printf("   | %s\n", data[min_stops_index].scales_cities[j]);
             }
         } else {
-            printf(" º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
         }
     } else {
         printf("\n Não há voos diretos disponíveis de \"%s\" para \"%s\".\n", origin_city, destination_city);
+    }
+
+    printf("\n");
+    sleep(1);
+    system("pause");
+}
+
+void findFlightsToDestination(FlightData data[], int flights_count) {
+    int i, found_flights = 0;
+    char destination_city[max_char];
+
+    system("cls");
+
+    companyShowcase();
+
+    printf("\n Neste painel, é possível determinar todos os voos que chegam a uma determinada cidade de destino.");
+
+    printf("\n\n Informe a cidade de destino para determinar os voos que chegam ao destino interessado.");
+    printf("\n\n º Cidade de destino: ");
+    fflush(stdin);
+    fgets(destination_city, max_char, stdin);
+    destination_city[strcspn(destination_city, "\n")] = '\0'; // Remover '\n'
+
+    sleep(1);
+    system("cls");
+
+    companyShowcase();
+
+    printf("\n Voos chegando a \"%s\":\n", destination_city);
+
+    for(i = 0; i < flights_count; i++) {
+        if(strcmp(data[i].arrival_city, destination_city) == 0) {
+            printf("\n º Código do voo: %d", data[i].flight_code);
+            printf("\n º Cidade de origem: %s", data[i].departure_city);
+            printf("\n º Cidade de destino: %s", data[i].arrival_city);
+            printf("\n º Número de escalas: %d", data[i].scales_amount);
+            if (data[i].scales_amount > 0) {
+                printf("\n º Cidades de escala:\n");
+                for (int j = 0; j < data[i].scales_amount; j++) {
+                    printf("   | %s\n", data[i].scales_cities[j]);
+                }
+            } else {
+                printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            }
+            found_flights++;
+        }
+    }
+
+    if(found_flights == 0) {
+        printf("\n Não há voos chegando a \"%s\".\n\n", destination_city);
     }
 
     printf("\n");
