@@ -56,7 +56,7 @@ void companyShowcase();
 void loginInformation();
 void loginPage();
 
-void optionsMenu(int *selected_option);
+int optionsMenu();
 
 void includeFlight(FlightData data[], int *flights_count);
 void updateFlight(FlightData data[], int flights_count);
@@ -74,16 +74,14 @@ int main() {
     setlocale(LC_ALL, "portuguese");
 
     FlightData data[max_flights];
-    int selected_option, flag = 0, flights_count = 0;
+    int selected_option, flights_count = 0;
 
-    // loginPage();
+    loginPage();
 
-    do {
+    while(1) {
         system("cls");
 
-        flag = 0;
-
-        optionsMenu(&selected_option);
+        selected_option = optionsMenu();
 
         switch(selected_option) {
             case 1:
@@ -130,7 +128,7 @@ int main() {
                 system("cls");
                 break;
         }
-    } while(flag != 1);
+    }
 }
 
 
@@ -176,6 +174,19 @@ void loginPage() {
         printf(" º Senha: ");
         scanf("%d", &password);
 
+        sleep(1);
+
+        printf("\n Carregando");
+
+        sleep(1);
+        printf(" .");
+        sleep(1);
+        printf(" .");
+        sleep(1);
+        printf(" .\n\n");
+
+        sleep(1);
+
         if((strcmp(user, "admin") != 0) && (password != 1234)) {
             trys++;
 
@@ -200,23 +211,14 @@ void loginPage() {
         }
     } while((strcmp(user, "admin") != 0) && (password != 1234));
 
-    sleep(1);
-
-    printf("\n Carregando");
-
-    sleep(1);
-    printf(" .");
-    sleep(1);
-    printf(" .");
-    sleep(1);
-    printf(" .\n\n");
-
-    sleep(1);
-
     system("cls");
 }
 
-void optionsMenu(int *selected_option) {
+
+
+int optionsMenu() {
+    int selected_option;
+
     companyShowcase();
 
     printf("\n Olá! Seja bem-vindo ao sistema de controle de voos e passagens aéreas.");
@@ -237,8 +239,12 @@ void optionsMenu(int *selected_option) {
 
     sleep(1);
     printf("\n\n Opção: ");
-    scanf("%d", selected_option);
+    scanf("%d", &selected_option);
+
+    return selected_option;
 }
+
+
 
 void includeFlight(FlightData data[], int *flights_count) {
     int i, j;
@@ -583,7 +589,7 @@ void deleteFlight(FlightData data[], int *flights_count) {
     printf("\n Neste painel, é possível excluir um determinado voo inserido/cadastrado no sistema.");
 
     printf("\n\n Para que um voo seja excluído efetivamente, é necessário que seu código seja informado.");
-    printf("\n Abaixo estão listados todos os códigos dos voos cadastrados no banco de dados do sistema da \"Voe Sempre, Voe Feliz\".");
+    printf("\n Abaixo estão listados todos os códigos dos voos cadastrados no banco de dados do sistema da \"Voe Sempre, Voe Feliz\".\n");
 
     if(*flights_count > 0) {
         for(i = 0; i < *flights_count; i++) {
