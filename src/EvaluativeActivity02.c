@@ -368,6 +368,7 @@ void includeFlight(FlightData data[], int *flights_count) {
 void updateFlight(FlightData data[], int flights_count) {
     FlightData old_data;
     int i, j, update_option, updatable_code, stored_flight = -1;
+    char updat_confirmation;
 
     system("cls");
 
@@ -502,59 +503,72 @@ void updateFlight(FlightData data[], int flights_count) {
                 return;
         }
 
-        sleep(1);
+        printf("\n Deseja confirmar/salvar as alterações realizadas? [S/n]: ");
 
-        printf("\n Atualizando informações");
+        do {
+            fflush(stdin);
+            updat_confirmation = getchar();
+        } while((toupper(updat_confirmation) != 'S') && (tolower(updat_confirmation) != 'n'));
 
-        sleep(1);
-        printf(" .");
-        sleep(1);
-        printf(" .");
-        sleep(1);
-        printf(" .");
+        if(toupper(updat_confirmation) == 'S') {
+            sleep(1);
 
-        sleep(1);
-        system("cls");
+            printf("\n Atualizando informações");
 
-        companyShowcase();
+            sleep(1);
+            printf(" .");
+            sleep(1);
+            printf(" .");
+            sleep(1);
+            printf(" .");
 
-        printf("\n Informações antigas do voo:");
-        printf("\n º Código do voo: %d", old_data.flight_code);
-        printf("\n º Cidade de origem: %s", old_data.departure_city);
-        printf("\n º Cidade de destino: %s", old_data.arrival_city);
-        printf("\n º Número de escalas: %d", old_data.scales_amount);
-        if(old_data.scales_amount > 0) {
-            printf("\n º Cidades de escala:\n");
-            for(j = 0; j < old_data.scales_amount; j++) {
-                printf("   | %s\n", old_data.scales_cities[j]);
+            sleep(1);
+            system("cls");
+
+            companyShowcase();
+
+            printf("\n Informações antigas do voo:");
+            printf("\n º Código do voo: %d", old_data.flight_code);
+            printf("\n º Cidade de origem: %s", old_data.departure_city);
+            printf("\n º Cidade de destino: %s", old_data.arrival_city);
+            printf("\n º Número de escalas: %d", old_data.scales_amount);
+            if(old_data.scales_amount > 0) {
+                printf("\n º Cidades de escala:\n");
+                for(j = 0; j < old_data.scales_amount; j++) {
+                    printf("   | %s\n", old_data.scales_cities[j]);
+                }
+            } else {
+                printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
             }
+
+            printf("\n Informações atualizadas do voo:");
+            printf("\n º Código do voo: %d", data[stored_flight].flight_code);
+            printf("\n º Cidade de origem: %s", data[stored_flight].departure_city);
+            printf("\n º Cidade de destino: %s", data[stored_flight].arrival_city);
+            printf("\n º Número de escalas: %d", data[stored_flight].scales_amount);
+            if(data[stored_flight].scales_amount > 0) {
+                printf("\n º Cidades de escala:\n");
+                for(j = 0; j < data[stored_flight].scales_amount; j++) {
+                    printf("   | %s\n", data[stored_flight].scales_cities[j]);
+                }
+            } else {
+                printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            }
+
+            printf("\n Informações do voo atualizadas com sucesso!\n\n");
         } else {
-            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
+            printf("\n As alterações foram canceladas...\n\n");
+
+            data[stored_flight] = old_data;
         }
 
-        printf("\n Informações atualizadas do voo:");
-        printf("\n º Código do voo: %d", data[stored_flight].flight_code);
-        printf("\n º Cidade de origem: %s", data[stored_flight].departure_city);
-        printf("\n º Cidade de destino: %s", data[stored_flight].arrival_city);
-        printf("\n º Número de escalas: %d", data[stored_flight].scales_amount);
-        if(data[stored_flight].scales_amount > 0) {
-            printf("\n º Cidades de escala:\n");
-            for(j = 0; j < data[stored_flight].scales_amount; j++) {
-                printf("   | %s\n", data[stored_flight].scales_cities[j]);
-            }
-        } else {
-            printf("\n º Cidades de escala: \"NÃO HÁ ESCALAS\"\n");
-        }
-
-        printf("\n Informações do voo atualizadas com sucesso!\n\n");
         sleep(1);
         system("pause");
     } else {
-        printf("\n\n º Não há nenhum voo inserido no banco de dados do sistema (sem voos para exibir)...\n\n");
+        printf("\n º Não há nenhum voo inserido no banco de dados do sistema (sem voos para exibir)...\n\n");
 
         sleep(1);
         system("pause");
-        return;
     }
 }
 
@@ -672,7 +686,7 @@ void listAllFlights(FlightData data[], int flights_count) {
             printf("\n");
         }
     } else {
-        printf("\n\n Não há nenhum voo cadastrado no banco de dados do sistema (sem dados para exibir)...\n\n");
+        printf(" Não há nenhum voo cadastrado no banco de dados do sistema (sem dados para exibir)...\n\n");
     }
 
     sleep(1);
