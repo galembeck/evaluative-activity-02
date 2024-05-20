@@ -224,7 +224,7 @@ int optionsMenu() {
     printf("\n Olá! Seja bem-vindo ao sistema de controle de voos e passagens aéreas.");
 
     printf("\n\n Abaixo, estão listadas todas as opções disponíveis para serem executadas em nosso sistema.");
-    printf("\n Escolha, dentre as opções listadas abaixo (1-7), uma para ser executada a seguir.\n");
+    printf("\n Escolha, dentre as opções listadas abaixo (1-8), uma para ser executada a seguir.\n");
 
     sleep(1);
 
