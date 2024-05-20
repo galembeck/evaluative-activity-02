@@ -374,7 +374,7 @@ void includeFlight(FlightData data[], int *flights_count) {
 void updateFlight(FlightData data[], int flights_count) {
     FlightData old_data;
     int i, j, update_option, updatable_code, stored_flight = -1;
-    char updat_confirmation;
+    char update_confirmation;
 
     system("cls");
 
@@ -513,10 +513,10 @@ void updateFlight(FlightData data[], int flights_count) {
 
         do {
             fflush(stdin);
-            updat_confirmation = getchar();
-        } while((toupper(updat_confirmation) != 'S') && (tolower(updat_confirmation) != 'n'));
+            update_confirmation = getchar();
+        } while((toupper(update_confirmation) != 'S') && (tolower(update_confirmation) != 'n'));
 
-        if(toupper(updat_confirmation) == 'S') {
+        if(toupper(update_confirmation) == 'S') {
             sleep(1);
 
             printf("\n Atualizando informações");
