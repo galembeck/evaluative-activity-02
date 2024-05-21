@@ -232,7 +232,7 @@ int optionsMenu() {
     printf("\n º Opção 2: Listar voos cadastrados;");
     printf("\n º Opção 3: Alterar informações de voo;");
     printf("\n º Opção 4: Apagar voos;");
-    printf("\n º Opção 5: Voos partindo de uma cidade de origem;");
+    printf("\n º Opção 5: Número de voos partindo de uma cidade de origem;");
     printf("\n º Opção 6: Informações do voo com menor número de escalas (determinada partida e origem);");
     printf("\n º Opção 7: Voos chegando em uma cidade de destino;");
     printf("\n º Opção 8: Sair;");
@@ -297,13 +297,15 @@ void includeFlight(FlightData data[], int *flights_count) {
 
         printf("\n Cidade de origem do %dº voo: ", i+1);
         fflush(stdin);
-        fgets(temp_data[temp_flights_count].departure_city, max_char, stdin);
-        temp_data[temp_flights_count].departure_city[strcspn(temp_data[temp_flights_count].departure_city, "\n")] = '\0'; // Remover '\n'
+        gets(temp_data[temp_flights_count].departure_city);
+        // fgets(temp_data[temp_flights_count].departure_city, max_char, stdin);
+        // temp_data[temp_flights_count].departure_city[strcspn(temp_data[temp_flights_count].departure_city, "\n")] = '\0'; // Remover '\n'
 
         printf("\n Cidade de destino do %dº voo: ", i+1);
         fflush(stdin);
-        fgets(temp_data[temp_flights_count].arrival_city, max_char, stdin);
-        temp_data[temp_flights_count].arrival_city[strcspn(temp_data[temp_flights_count].arrival_city, "\n")] = '\0'; // Remover '\n'
+        gets(temp_data[temp_flights_count].arrival_city);
+        // fgets(temp_data[temp_flights_count].arrival_city, max_char, stdin);
+        // temp_data[temp_flights_count].arrival_city[strcspn(temp_data[temp_flights_count].arrival_city, "\n")] = '\0'; // Remover '\n'
 
         do {
             printf("\n Número de escalas do %dº voo: ", i+1);
@@ -317,8 +319,9 @@ void includeFlight(FlightData data[], int *flights_count) {
         for(j = 0; j < temp_data[temp_flights_count].scales_amount; j++) {
             printf("\n Cidade da %dº escala do %dº voo: ", j+1, i+1);
             fflush(stdin);
-            fgets(temp_data[temp_flights_count].scales_cities[j], max_char, stdin);
-            temp_data[temp_flights_count].scales_cities[j][strcspn(temp_data[temp_flights_count].scales_cities[j], "\n")] = '\0'; // Remover '\n'
+            gets(temp_data[temp_flights_count].scales_cities[j]);
+            // fgets(temp_data[temp_flights_count].scales_cities[j], max_char, stdin);
+            // temp_data[temp_flights_count].scales_cities[j][strcspn(temp_data[temp_flights_count].scales_cities[j], "\n")] = '\0'; // Remover '\n'
         }
 
         temp_flights_count++;
@@ -467,14 +470,16 @@ void updateFlight(FlightData data[], int flights_count) {
             case 2:
                 printf("\n Informe a nova cidade de origem: ");
                 fflush(stdin);
-                fgets(data[stored_flight].departure_city, max_char, stdin);
-                data[stored_flight].departure_city[strcspn(data[stored_flight].departure_city, "\n")] = '\0'; // Remover '\n'
+                gets(data[stored_flight].departure_city);
+                // fgets(data[stored_flight].departure_city, max_char, stdin);
+                // data[stored_flight].departure_city[strcspn(data[stored_flight].departure_city, "\n")] = '\0'; // Remover '\n'
                 break;
             case 3:
                 printf("\n Informe a nova cidade de destino: ");
                 fflush(stdin);
-                fgets(data[stored_flight].arrival_city, max_char, stdin);
-                data[stored_flight].arrival_city[strcspn(data[stored_flight].arrival_city, "\n")] = '\0'; // Remover '\n'
+                gets(data[stored_flight].arrival_city);
+                // fgets(data[stored_flight].arrival_city, max_char, stdin);
+                // data[stored_flight].arrival_city[strcspn(data[stored_flight].arrival_city, "\n")] = '\0'; // Remover '\n'
                 break;
             case 4:
                 do {
@@ -487,8 +492,9 @@ void updateFlight(FlightData data[], int flights_count) {
                     for(j = 0; j < data[stored_flight].scales_amount; j++) {
                         printf("\n Informe a nova cidade da %dº escala: ", j+1);
                         fflush(stdin);
-                        fgets(data[stored_flight].scales_cities[j], max_char, stdin);
-                        data[stored_flight].scales_cities[j][strcspn(data[stored_flight].scales_cities[j], "\n")] = '\0'; // Remover '\n'
+                        gets(data[stored_flight].scales_cities[j]);
+                        // fgets(data[stored_flight].scales_cities[j], max_char, stdin);
+                        // data[stored_flight].scales_cities[j][strcspn(data[stored_flight].scales_cities[j], "\n")] = '\0'; // Remover '\n'
                     }
                 } else {
                     printf("\n O voo em questão não possui escalas!\n\n");
@@ -714,9 +720,9 @@ void countFlightFromCity(FlightData data[], int flights_count) {
     printf("\n\n Informe a cidade de origem desejada para determinar quantos voos saem deste local.");
     printf("\n\n º Cidade de origem: ");
     fflush(stdin);
-    fgets(origin_city, max_char, stdin);
-
-    origin_city[strcspn(origin_city, "\n")] = '\0'; // Remover '\0'
+    gets(origin_city);
+    // fgets(origin_city, max_char, stdin);
+    // origin_city[strcspn(origin_city, "\n")] = '\0'; // Remover '\0'
 
     for(i = 0; i < flights_count; i++) {
         if(strcmp(data[i].departure_city, origin_city) == 0) {
@@ -743,13 +749,15 @@ void findFlightWithMinimumStops(FlightData data[], int flights_count) {
     printf("\n\n Informe a cidade de origem e destino para determinar as informações do voo com o menor número de escalas.");
     printf("\n\n º Cidade de origem: ");
     fflush(stdin);
-    fgets(origin_city, max_char, stdin);
-    origin_city[strcspn(origin_city, "\n")] = '\0'; // Remover '\n'
+    gets(origin_city);
+    // fgets(origin_city, max_char, stdin);
+    // origin_city[strcspn(origin_city, "\n")] = '\0'; // Remover '\n'
 
     printf("\n º Cidade de destino: ");
     fflush(stdin);
-    fgets(destination_city, max_char, stdin);
-    destination_city[strcspn(destination_city, "\n")] = '\0'; // Remover '\n'
+    gets(destination_city);
+    // fgets(destination_city, max_char, stdin);
+    // destination_city[strcspn(destination_city, "\n")] = '\0'; // Remover '\n'
 
     for(i = 0; i < flights_count; i++) {
         if((strcmp(data[i].departure_city, origin_city) == 0) && (strcmp(data[i].arrival_city, destination_city) == 0)) {
@@ -796,8 +804,9 @@ void findFlightsToDestination(FlightData data[], int flights_count) {
     printf("\n\n Informe a cidade de destino para determinar os voos que chegam ao destino interessado.");
     printf("\n\n º Cidade de destino: ");
     fflush(stdin);
-    fgets(destination_city, max_char, stdin);
-    destination_city[strcspn(destination_city, "\n")] = '\0'; // Remover '\n'
+    gets(destination_city);
+    // fgets(destination_city, max_char, stdin);
+    // destination_city[strcspn(destination_city, "\n")] = '\0'; // Remover '\n'
 
     sleep(1);
     system("cls");
